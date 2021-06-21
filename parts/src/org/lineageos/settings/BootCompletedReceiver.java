@@ -26,6 +26,7 @@ import android.provider.Settings;
 import org.lineageos.settings.utils.FileUtils;
 import org.lineageos.settings.dirac.DiracUtils;
 import org.lineageos.settings.doze.DozeUtils;
+import org.lineageos.settings.haptic.HapticUtils;
 
 public class BootCompletedReceiver extends BroadcastReceiver implements Controller {
     private static final boolean DEBUG = false;
@@ -64,5 +65,6 @@ public class BootCompletedReceiver extends BroadcastReceiver implements Controll
         
         DiracUtils.initialize(context);
         DozeUtils.checkDozeService(context);
+        HapticUtils.restoreLevel(context);
     }
 }
