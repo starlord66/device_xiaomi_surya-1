@@ -373,6 +373,7 @@ PRODUCT_PACKAGES += \
     fastbootd
 
 PRODUCT_PACKAGES += \
+    init.performance_level.rc \
     init.recovery.qcom.rc
 
 # Sensors
