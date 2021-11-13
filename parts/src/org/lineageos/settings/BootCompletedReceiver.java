@@ -62,7 +62,7 @@ public class BootCompletedReceiver extends BroadcastReceiver implements Controll
                     PREF_HUE, HUE_DEFAULT));
         }
         
-        DiracUtils.initialize();
+        DiracUtils.initialize(context);
         DozeUtils.checkDozeService(context);
     }
 }

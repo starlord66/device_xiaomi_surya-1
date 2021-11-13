@@ -21,7 +21,7 @@ import android.widget.Switch;
 
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
-import androidx.preference.PreferenceCategory;
+import androidx.preference.Preference.OnPreferenceChangeListener;
 import androidx.preference.PreferenceFragment;
 import androidx.preference.SwitchPreference;
 
@@ -31,23 +31,25 @@ import com.android.settingslib.widget.OnMainSwitchChangeListener;
 import org.lineageos.settings.R;
 
 public class DiracSettingsFragment extends PreferenceFragment implements
-        Preference.OnPreferenceChangeListener, OnMainSwitchChangeListener {
+        OnPreferenceChangeListener, OnMainSwitchChangeListener {
 
     private static final String PREF_ENABLE = "dirac_enable";
     private static final String PREF_HEADSET = "dirac_headset_pref";
+    private static final String PREF_HIFI = "dirac_hifi_pref";
     private static final String PREF_PRESET = "dirac_preset_pref";
 
     private MainSwitchPreference mSwitchBar;
 
     private ListPreference mHeadsetType;
     private ListPreference mPreset;
+    private SwitchPreference mHifi;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.dirac_settings);
 
-        DiracUtils.initialize();
-        boolean enhancerEnabled = DiracUtils.isDiracEnabled(getActivity());
+        DiracUtils.initialize(getActivity());
+        boolean enhancerEnabled = DiracUtils.isDiracEnabled();
 
         mSwitchBar = (MainSwitchPreference) findPreference(PREF_ENABLE);
         mSwitchBar.addOnSwitchChangeListener(this);
@@ -55,11 +57,16 @@ public class DiracSettingsFragment extends PreferenceFragment implements
 
         mHeadsetType = (ListPreference) findPreference(PREF_HEADSET);
         mHeadsetType.setOnPreferenceChangeListener(this);
-        mHeadsetType.setEnabled(enhancerEnabled);
 
         mPreset = (ListPreference) findPreference(PREF_PRESET);
         mPreset.setOnPreferenceChangeListener(this);
-        mPreset.setEnabled(enhancerEnabled);
+
+        mHifi = (SwitchPreference) findPreference(PREF_HIFI);
+        mHifi.setOnPreferenceChangeListener(this);
+
+        boolean hifiEnable = DiracUtils.getHifiMode();
+        mHeadsetType.setEnabled(!hifiEnable && enhancerEnabled);
+        mPreset.setEnabled(!hifiEnable && enhancerEnabled);
     }
 
     @Override
@@ -68,8 +75,15 @@ public class DiracSettingsFragment extends PreferenceFragment implements
             case PREF_HEADSET:
                 DiracUtils.setHeadsetType(Integer.parseInt(newValue.toString()));
                 return true;
+            case PREF_HIFI:
+                DiracUtils.setHifiMode((Boolean) newValue ? 1 : 0);
+                if (DiracUtils.isDiracEnabled()) {
+                    mHeadsetType.setEnabled(!(Boolean) newValue);
+                    mPreset.setEnabled(!(Boolean) newValue);
+                }
+                return true;
             case PREF_PRESET:
-                DiracUtils.setLevel(String.valueOf(newValue));
+                DiracUtils.setLevel((String) newValue);
                 return true;
             default:
                 return false;
@@ -78,11 +92,13 @@ public class DiracSettingsFragment extends PreferenceFragment implements
 
     @Override
     public void onSwitchChanged(Switch switchView, boolean isChecked) {
-        DiracUtils.setMusic(isChecked);
-
         mSwitchBar.setChecked(isChecked);
 
-        mHeadsetType.setEnabled(isChecked);
-        mPreset.setEnabled(isChecked);
+        DiracUtils.setMusic(isChecked);
+
+        if (!DiracUtils.getHifiMode()) {
+            mHeadsetType.setEnabled(isChecked);
+            mPreset.setEnabled(isChecked);
+        }
     }
 }

@@ -17,14 +17,18 @@
 package org.lineageos.settings.dirac;
 
 import android.content.Context;
+import android.media.AudioManager;
+
 
 public final class DiracUtils {
 
     protected static DiracSound mDiracSound;
     private static boolean mInitialized;
+    private static Context mContext;
 
-    public static void initialize() {
+    public static void initialize(Context context) {
         if (!mInitialized) {
+            mContext = context;
             mDiracSound = new DiracSound(0, 0);
             mInitialized = true;
         }
@@ -34,7 +38,7 @@ public final class DiracUtils {
         mDiracSound.setMusic(enable ? 1 : 0);
     }
 
-    protected static boolean isDiracEnabled(Context context) {
+    protected static boolean isDiracEnabled() {
         return mDiracSound != null && mDiracSound.getMusic() == 1;
     }
 
@@ -47,6 +51,17 @@ public final class DiracUtils {
     }
 
     protected static void setHeadsetType(int paramInt) {
-         mDiracSound.setHeadsetType(paramInt);
+        mDiracSound.setHeadsetType(paramInt);
+    }
+
+    protected static boolean getHifiMode() {
+        AudioManager audioManager = mContext.getSystemService(AudioManager.class);
+        return audioManager.getParameters("hifi_mode").contains("true");
+    }
+
+    protected static void setHifiMode(int paramInt) {
+        AudioManager audioManager = mContext.getSystemService(AudioManager.class);
+        audioManager.setParameters("hifi_mode=" + (paramInt == 1));
+        mDiracSound.setHifiMode(paramInt);
     }
 }
