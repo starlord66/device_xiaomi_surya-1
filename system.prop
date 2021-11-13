@@ -11,6 +11,9 @@ ro.charger.enable_suspend=true
 # Dex2oat
 dalvik.vm.dex2oat64.enabled=true
 
+# Dirac
+ro.audio.soundfx.dirac=true
+
 # LCD features
 persist.lcd.cabc_mode=0
 persist.lcd.hbm_mode=0
