@@ -81,14 +81,16 @@ void vendor_load_properties() {
     std::string model;
     std::string device;
     std::string fingerprint;
+    std::string description;
 
+        fingerprint = "google/raven/raven:12/SD1A.210817.036/7805805:user/release-keys";
+        description = "raven-user 12 SD1A.210817.036 7805805 release-keys";
+        
     if (hwname == "karna") {
         model = "M2007J20CI";
         device = "karna";
-        fingerprint = "POCO/karna_in/karna:11/RKQ1.200826.002/V12.5.3.0.RJGINXM:user/release-keys";
     } else {
         device = "surya";
-        fingerprint = "POCO/surya_eea/surya:11/RKQ1.200826.002/V12.5.3.0.RJGEUXM:user/release-keys";
 
         if (region == "THAI" || region == "THAI_PA")
             model = "M2007J20CT";
@@ -97,6 +99,7 @@ void vendor_load_properties() {
     }
 
     set_ro_build_prop("fingerprint", fingerprint);
+    set_ro_build_prop("description", description);
     set_ro_product_prop("device", device);
     set_ro_product_prop("model", model);
     property_override("ro.boot.hardware.revision", hardware_revision.c_str());
