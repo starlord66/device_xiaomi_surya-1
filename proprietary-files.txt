@@ -69,6 +69,8 @@ vendor/lib/rfsa/adsp/tas25xx_TI_1.bin
 
 # Audio dirac - from xiaomi
 vendor/etc/diracmobile.config|d781cd6798a7481a8f7128d144abfb2b8794212d
+vendor/etc/audio.scd|d5e4195feb28bfd5d6817d767c42f772
+vendor/etc/diracvdd.bin|20e8ac0af0ac90eb4de3312892ad9057
 vendor/lib/libDiracAPI_SHARED.so|42b49679d38eca93fead05ea06ddbdc8108fd4b1
 vendor/lib/soundfx/libdirac.so|f63826a905b520fa524e4c1b147be7cf65240953
 vendor/lib/rfsa/adsp/dirac_resource.dar|cd71f1a846ae561eea40db9c2deee698d296e403
