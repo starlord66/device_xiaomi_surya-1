@@ -150,9 +150,6 @@ ro.config.sdha_apps_bg_min=8
 ro.vendor.perf.scroll_opt=true
 
 # graphics
-debug.hwui.renderer=skiavk
-debug.renderengine.backend=skiaglthreaded
-renderthread.skia.reduceopstasksplitting=true
 debug.cpurend.vsync=false
 debug.sf.disable_client_composition_cache=1
 
