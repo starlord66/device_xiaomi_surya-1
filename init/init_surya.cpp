@@ -56,16 +56,6 @@ void property_override(char const prop[], char const value[], bool add = true)
         __system_property_add(prop, strlen(prop), value, strlen(value));
 }
 
-void set_ro_build_prop(const std::string &prop, const std::string &value) {
-    for (const auto &source : ro_props_default_source_order) {
-        auto prop_name = "ro." + source + "build." + prop;
-        if (source == "")
-            property_override(prop_name.c_str(), value.c_str());
-        else
-            property_override(prop_name.c_str(), value.c_str(), false);
-    }
-};
-
 void set_ro_product_prop(const std::string &prop, const std::string &value) {
     for (const auto &source : ro_props_default_source_order) {
         auto prop_name = "ro.product." + source + prop;
@@ -80,12 +70,7 @@ void vendor_load_properties() {
 
     std::string model;
     std::string device;
-    std::string fingerprint;
-    std::string description;
 
-        fingerprint = "google/raven/raven:12/SD1A.210817.036/7805805:user/release-keys";
-        description = "raven-user 12 SD1A.210817.036 7805805 release-keys";
-        
     if (hwname == "karna") {
         model = "M2007J20CI";
         device = "karna";
@@ -98,8 +83,6 @@ void vendor_load_properties() {
             model = "M2007J20CG";
     }
 
-    set_ro_build_prop("fingerprint", fingerprint);
-    set_ro_build_prop("description", description);
     set_ro_product_prop("device", device);
     set_ro_product_prop("model", model);
     property_override("ro.boot.hardware.revision", hardware_revision.c_str());
